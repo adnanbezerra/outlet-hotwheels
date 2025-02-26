@@ -4,8 +4,8 @@
 - O sistema deve permitir que o usuário se cadast
 re e faça login
 - O usuário deve visualizar produtos
-- O usuário pode sleecionar um item e adicionar ao carrinho
-- O usuároi deve poder ver os produtos que adicionou no carrinho
+- O usuário pode selecionar um item e adicionar ao carrinho
+- O usuário deve poder ver os produtos que adicionou no carrinho
 - O usuário deve finalizar compras ao clicar em "finalizar pedido"
 - O usuário deve poder remover o item do carrinho
 
@@ -19,3 +19,10 @@ re e faça login
 - segurança com JWT 
 - interfaces RESTful 
 - GraphQL.
+
+## Membros do grupo
+- Adnan
+- Adeval
+- Caio
+- Gizele
+- Layla
