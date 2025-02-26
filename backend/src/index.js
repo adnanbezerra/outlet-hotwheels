@@ -3,8 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { ProductsRouter } from "./routers/products-router.js";
 import { UsersRouter } from "./routers/users-routers.js";
-import ProtectedRouter from "./routers/protected-router.js"; 
-
+import ProtectedRouter from "./routers/protected-router.js";
 
 dotenv.config();
 
