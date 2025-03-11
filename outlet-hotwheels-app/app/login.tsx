@@ -8,7 +8,6 @@ import {
     Image,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { AntDesign } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
 const login = () => {
