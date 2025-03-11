@@ -1,9 +1,17 @@
-import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React from "react";
+import {
+    Text,
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    TextInput,
+    Image,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
-const welcome = () => {
+const login = () => {
     const router = useRouter();
 
     return (
@@ -20,13 +28,21 @@ const welcome = () => {
                         style={styles.logo}
                     ></Image>
                     <Text style={styles.title}>Outlet Hotwheels</Text>
-                    <Text style={styles.subtitle}>
-                        Acelerando a sua coleção
-                    </Text>
                 </View>
+                <TextInput style={styles.input} placeholder="Nome completo*" />
+                <TextInput style={styles.input} placeholder="E-mail" />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Senha"
+                    secureTextEntry
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Confirme a senha"
+                />
                 <TouchableOpacity
-                    onPress={() => router.replace("/login")}
                     style={styles.loginButton}
+                    onPress={() => router.replace("/(tabs)/home")}
                 >
                     <Text>Login</Text>
                 </TouchableOpacity>
@@ -53,6 +69,10 @@ const styles = StyleSheet.create({
     logoContainer: {
         marginBottom: 24,
         alignItems: "center",
+    },
+    logo: {
+        width: 200,
+        height: 100,
     },
     loginButton: {
         backgroundColor: "#fff",
@@ -82,10 +102,13 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginBottom: 24,
     },
-    logo: {
+    input: {
         width: 200,
-        height: 100,
+        marginBottom: 10,
+        borderColor: "#fff",
+        backgroundColor: "#fff",
+        borderRadius: 5,
     },
 });
 
-export default welcome;
+export default login;

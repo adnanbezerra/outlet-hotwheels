@@ -1,9 +1,17 @@
-import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React from "react";
+import {
+    Text,
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    TextInput,
+    Image,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
-const welcome = () => {
+const login = () => {
     const router = useRouter();
 
     return (
@@ -20,13 +28,21 @@ const welcome = () => {
                         style={styles.logo}
                     ></Image>
                     <Text style={styles.title}>Outlet Hotwheels</Text>
-                    <Text style={styles.subtitle}>
-                        Acelerando a sua coleção
-                    </Text>
                 </View>
+                <TextInput
+                    style={styles.input}
+                    placeholder="E-mail"
+                    textContentType="emailAddress"
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Senha"
+                    textContentType="password"
+                    secureTextEntry
+                />
                 <TouchableOpacity
-                    onPress={() => router.replace("/login")}
                     style={styles.loginButton}
+                    onPress={() => router.replace("/(tabs)/home")}
                 >
                     <Text>Login</Text>
                 </TouchableOpacity>
@@ -46,6 +62,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+    },
+    logo: {
+        width: 200,
+        height: 100,
     },
     textContainer: {
         alignItems: "center",
@@ -82,10 +102,13 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginBottom: 24,
     },
-    logo: {
+    input: {
+        marginBottom: 10,
+        borderColor: "#fff",
+        backgroundColor: "#fff",
+        borderRadius: 5,
         width: 200,
-        height: 100,
     },
 });
 
-export default welcome;
+export default login;
