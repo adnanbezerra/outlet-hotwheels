@@ -1,4 +1,4 @@
-import { IProductCard, ProductCard } from "@/components/ProductCard";
+import { ProductCard } from "@/components/ProductCard";
 import useProducts from "@/hooks/useProducts";
 import { StyleSheet, Text, View } from "react-native";
 

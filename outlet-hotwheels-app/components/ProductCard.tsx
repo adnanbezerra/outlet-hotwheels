@@ -1,16 +1,10 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Image, Text, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { useCart } from "./CartContext";
-
-export interface IProductCard {
-    id: number;
-    title: string;
-    price: number;
-    description: string;
-    image: string;
-    stars: number;
-}
+import { Ionicons } from '@expo/vector-icons';
+import { renderStars } from '@/shared/render-stars';
+import { formatPrice } from '@/shared/format-price';
+import { IProductCard } from '@/interfaces/product-card';
 
 export function ProductCard({
     id,
@@ -69,34 +63,6 @@ export function ProductCard({
     );
 }
 
-const renderStars = (rating: number) => {
-    const totalStars = 5;
-    const stars = [];
-
-    for (let i = 0; i < totalStars; i++) {
-        if (i < Math.floor(rating)) {
-            stars.push(
-                <Ionicons key={i} name="star" size={24} color="#3483FA" />
-            );
-        } else if (i < rating) {
-            stars.push(
-                <Ionicons key={i} name="star-half" size={24} color="#3483FA" />
-            );
-        } else {
-            stars.push(
-                <Ionicons
-                    key={i}
-                    name="star-outline"
-                    size={24}
-                    color="#3483FA"
-                />
-            );
-        }
-    }
-
-    return <View style={{ flexDirection: "row" }}>{stars}</View>;
-};
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -145,10 +111,3 @@ const styles = StyleSheet.create({
         marginTop: 5,
     },
 });
-
-const formatPrice = (price: number): string => {
-    return (price / 100).toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-    });
-};

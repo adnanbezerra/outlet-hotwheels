@@ -1,4 +1,4 @@
-import { IProductCard } from "@/components/ProductCard";
+import { IProductCard } from '@/interfaces/product-card';
 import { useState, useEffect } from "react";
 
 const useProducts = () => {
