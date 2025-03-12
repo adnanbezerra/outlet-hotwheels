@@ -1,17 +1,17 @@
-import { ProductCard } from "@/components/ProductCard";
+import { IProductCard, ProductCard } from "@/components/ProductCard";
+import useProducts from "@/hooks/useProducts";
 import { StyleSheet, Text, View } from "react-native";
 
 const home = () => {
+    const { products } = useProducts();
+
     return (
         <View style={style.container}>
             <Text style={style.title}>Seu outlet de HotWheels barato!</Text>
             <Text style={style.subtitle}>Confira nosso catálogo abaixo:</Text>
-            <ProductCard
-                title="Product 1"
-                price="10,00"
-                description="Description 1"
-                image="https://images.tcdn.com.br/img/img_prod/639703/carrinhos_basicos_hot_wheels_mattel_ref_c4982_4897_2_20200331171200.jpg"
-            />
+            {products.map((product) => (
+                <ProductCard key={product.id} {...product} />
+            ))}
         </View>
     );
 };
@@ -32,5 +32,5 @@ const style = StyleSheet.create({
     subtitle: {
         fontSize: 16,
         marginBottom: 5,
-    }
+    },
 });
