@@ -20,9 +20,7 @@ export function ProductCard({
     image,
     stars,
 }: IProductCard) {
-    const { addToCart, cart } = useCart();
-
-    console.log(cart);  
+    const { addToCart } = useCart();
 
     return (
         <View style={styles.container}>
