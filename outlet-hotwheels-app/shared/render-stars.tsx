@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { View } from 'react-native-reanimated/lib/typescript/Animated';
+import { View } from "react-native";
 
 export const renderStars = (rating: number) => {
     const totalStars = 5;

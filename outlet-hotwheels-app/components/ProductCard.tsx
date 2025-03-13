@@ -10,7 +10,6 @@ export function ProductCard({
     id,
     title,
     price,
-    description,
     image,
     stars,
 }: IProductCard) {
@@ -56,7 +55,6 @@ export function ProductCard({
                     {renderStars(stars)}
                 </View>
                 <Text style={styles.price}>{formatPrice(price)}</Text>
-                <Text numberOfLines={3}>{description}</Text>
                 <Text style={styles.frete}>Frete grátis</Text>
             </View>
         </View>
@@ -67,6 +65,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
+        paddingHorizontal: 40,
         marginTop: 10,
         borderRadius: 10,
         borderWidth: 1,
@@ -76,7 +75,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 30,
-        maxHeight: 210,
+        maxHeight: 170,
         backgroundColor: "#fff",
         shadowColor: "#000",
         shadowOpacity: 0.25,
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     informationContainer: {
-        maxWidth: 200,
+        width: 150,
     },
     price: {
         fontWeight: "bold",
