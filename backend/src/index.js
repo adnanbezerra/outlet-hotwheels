@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import { ProductsRouter } from "./routers/products-router.js";
 import { UsersRouter } from "./routers/users-routers.js";
 import ProtectedRouter from "./routers/protected-router.js";
+import OrderRouter from "./routers/order-routers.js";
+import carrinhoRouter from "./routers/carrinho-router.js";
 
 dotenv.config();
 
@@ -20,6 +22,8 @@ server.use(express.json());
 server.use(ProductsRouter);
 server.use(UsersRouter);
 server.use(ProtectedRouter);
+server.use(OrderRouter);
+server.use(carrinhoRouter);
 
 server.listen(PORT, () => {
     console.log(`It's alive on port ${PORT}`);

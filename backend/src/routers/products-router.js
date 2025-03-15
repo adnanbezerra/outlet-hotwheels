@@ -10,6 +10,7 @@ import { editPromotion } from "../controllers/edit-promotion-controller.js";
 import { deletePromotion } from "../controllers/delete-promotion-controller.js";
 import { updateProduct } from "../controllers/edit-product-controller.js";
 import { deleteProduct } from "../controllers/delete-product-controller.js";
+import { addProductToCart } from "../controllers/carrinho-controller.js";
 
 export const ProductsRouter = Router();
 
@@ -24,3 +25,4 @@ ProductsRouter.delete("/product/:id", deleteProduct);
 ProductsRouter.post("/product/:id/promotion", addPromotion);
 ProductsRouter.put("/product/:id/promotion", editPromotion);
 ProductsRouter.delete("/product/:id/promotion", deletePromotion);
+ProductsRouter.post("/product/:productId/add-to-cart", addProductToCart);
