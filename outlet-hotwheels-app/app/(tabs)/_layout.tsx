@@ -18,9 +18,9 @@ export default function TabLayout() {
                 }}
             />
             <Tabs.Screen
-                name="explore"
+                name="product/[id]"
                 options={{
-                    title: "Explore",
+                    title: "Ver Produto",
                     headerStyle: {
                         backgroundColor: "#CE3E2F",
                     },

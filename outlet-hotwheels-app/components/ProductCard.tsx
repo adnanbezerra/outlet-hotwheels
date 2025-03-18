@@ -1,63 +1,70 @@
-import { StyleSheet, TouchableOpacity } from "react-native";
+import {
+    StyleSheet,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+} from "react-native";
 import { Image, Text, View } from "react-native";
 import { useCart } from "./CartContext";
-import { Ionicons } from '@expo/vector-icons';
-import { renderStars } from '@/shared/render-stars';
-import { formatPrice } from '@/shared/format-price';
-import { IProductCard } from '@/interfaces/product-card';
+import { Ionicons } from "@expo/vector-icons";
+import { renderStars } from "@/shared/render-stars";
+import { formatPrice } from "@/shared/format-price";
+import { IProductCard } from "@/interfaces/product-card";
+import { router } from "expo-router";
 
-export function ProductCard({
-    id,
-    title,
-    price,
-    image,
-    stars,
-}: IProductCard) {
+export function ProductCard({ id, title, price, image, stars }: IProductCard) {
     const { addToCart } = useCart();
 
     return (
-        <View style={styles.container}>
-            <View>
-                <Image
-                    source={{ uri: image }}
-                    style={{ width: 100, height: 100 }}
-                />
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => addToCart({
-                        id,
-                        name: title,
-                        price,
-                        quantity: 1,
-                    })}
-                >
-                    <Text style={styles.buttonText}>
-                        <Ionicons
-                            name={"cart-outline"}
-                            size={24}
-                            color="#fff"
-                        />
-                    </Text>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.informationContainer}>
-                <Text style={styles.title}>{title}</Text>
-                <View
-                    style={{
-                        flex: 1,
-                        flexDirection: "row",
-                        alignItems: "center",
-                    }}
-                >
-                    <Text style={{ marginRight: 5, color: "#3483FA" }}>
-                        {stars}
-                    </Text>
-                    {renderStars(stars)}
+        <TouchableWithoutFeedback
+            onPress={() => {
+                router.push(`/product/${id}`);
+            }}
+        >
+            <View style={styles.container}>
+                <View>
+                    <Image
+                        source={{ uri: image }}
+                        style={{ width: 100, height: 100 }}
+                    />
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() =>
+                            addToCart({
+                                id,
+                                name: title,
+                                price,
+                                quantity: 1,
+                            })
+                        }
+                    >
+                        <Text style={styles.buttonText}>
+                            <Ionicons
+                                name={"cart-outline"}
+                                size={24}
+                                color="#fff"
+                            />
+                        </Text>
+                    </TouchableOpacity>
                 </View>
-                <Text style={styles.price}>{formatPrice(price)}</Text>
-                <Text style={styles.frete}>Frete grátis</Text>
+                <View style={styles.informationContainer}>
+                    <Text style={styles.title}>{title}</Text>
+                    <View
+                        style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Text style={{ marginRight: 5, color: "#3483FA" }}>
+                            {stars}
+                        </Text>
+                        {renderStars(stars)}
+                    </View>
+                    <Text style={styles.price}>{formatPrice(price)}</Text>
+                    <Text style={styles.frete}>Frete grátis</Text>
+                </View>
             </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 }
 

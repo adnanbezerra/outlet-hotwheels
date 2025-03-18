@@ -1,24 +1,24 @@
 import React from "react";
-import { 
-    View, 
-    Text, 
-    StyleSheet, 
-    FlatList, 
+import {
+    View,
+    Text,
+    StyleSheet,
+    FlatList,
     TouchableOpacity,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useCart } from "@/components/CartContext";
 
 const ShoppingCart = () => {
-    const { cart }  = useCart();
+    const { cart } = useCart();
     const router = useRouter();
 
     const cartItems = [
         // Exemplo de itens no carrinho
-        { id: '1', name: 'Hot Wheels Car 1', price: 10 },
+        { id: "1", name: "Hot Wheels Car 1", price: 10 },
     ];
 
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item }: { item: any }) => (
         <View style={styles.itemContainer}>
             <Text style={styles.itemName}>{item.name}</Text>
             <Text style={styles.itemPrice}>R$ {item.price}</Text>
@@ -31,7 +31,7 @@ const ShoppingCart = () => {
             <FlatList
                 data={cartItems}
                 renderItem={renderItem}
-                keyExtractor={item => item.id}
+                keyExtractor={(item) => item.id}
             />
             <TouchableOpacity
                 style={styles.checkoutButton}

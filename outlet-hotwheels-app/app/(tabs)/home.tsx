@@ -1,24 +1,24 @@
 import { ProductCard } from "@/components/ProductCard";
 import useProducts from "@/hooks/useProducts";
-import { StyleSheet, Text, View, TouchableOpacity, } from "react-native";
-import { useRouter } from "expo-router"; 
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 const home = () => {
     const { products } = useProducts();
-    const router = useRouter(); 
+    const router = useRouter();
 
     return (
         <View style={style.container}>
             <View style={style.header}>
-            <Text style={style.title}>Seu outlet de HotWheels barato!</Text>
-            <TouchableOpacity
+                <Text style={style.title}>Seu outlet de HotWheels barato!</Text>
+                <TouchableOpacity
                     style={style.cartButton}
                     onPress={() => router.push("/shoppingCart")}
                 >
                     <Ionicons name="cart" size={24} color="#fff" />
                 </TouchableOpacity>
-                </View>
+            </View>
             <Text style={style.subtitle}>Confira nosso catálogo abaixo:</Text>
             {products.map((product) => (
                 <ProductCard key={product.id} {...product} />
