@@ -1,18 +1,48 @@
-import React from "react";
-import {
-    Text,
-    View,
-    StyleSheet,
-    TouchableOpacity,
-    TextInput,
-    Image,
-} from "react-native";
+import React, { useState } from "react";
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { AntDesign } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
 const login = () => {
     const router = useRouter();
+    
+    // Estados para os campos e mensagens de erro
+    const [fullName, setFullName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [cpf, setCpf] = useState("");
+
+    const [errorMessage, setErrorMessage] = useState("");
+
+    // Função para validar CPF (simples, pode ser melhorada para validação completa)
+    const validateCPF = (cpf) => {
+        const cpfRegex = /^[0-9]{11}$/;
+        return cpfRegex.test(cpf);
+    };
+
+    // Função para validar o email
+    const validateEmail = (email) => {
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        return emailRegex.test(email);
+    };
+
+    // Função para verificar se o formulário pode ser enviado
+    const isFormValid = () => {
+        if (!fullName || fullName.length < 2) return false;
+        if (!email || !validateEmail(email)) return false;
+        if (!cpf || !validateCPF(cpf)) return false;
+        if (!password || !confirmPassword || password !== confirmPassword) return false;
+        return true;
+    };
+
+    const handleSubmit = () => {
+        if (isFormValid()) {
+            router.replace("/(tabs)/home");
+        } else {
+            setErrorMessage("Preencha todos os campos corretamente.");
+        }
+    };
 
     return (
         <LinearGradient
@@ -29,28 +59,62 @@ const login = () => {
                     ></Image>
                     <Text style={styles.title}>Outlet Hotwheels</Text>
                 </View>
-                <TextInput style={styles.input} placeholder="Nome completo*" />
-                <TextInput style={styles.input} placeholder="E-mail" />
+                
+                <TextInput
+                    style={styles.input}
+                    placeholder="Nome completo*"
+                    value={fullName}
+                    onChangeText={setFullName}
+                />
+                {fullName && fullName.length < 2 && <Text style={styles.errorText}>Nome completo deve ter pelo menos 2 caracteres</Text>}
+                
+                <TextInput
+                    style={styles.input}
+                    placeholder="E-mail"
+                    value={email}
+                    onChangeText={setEmail}
+                />
+                {email && !validateEmail(email) && <Text style={styles.errorText}>E-mail inválido</Text>}
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="CPF"
+                    value={cpf}
+                    onChangeText={setCpf}
+                    keyboardType="numeric"
+                />
+                {cpf && !validateCPF(cpf) && <Text style={styles.errorText}>CPF inválido</Text>}
+
                 <TextInput
                     style={styles.input}
                     placeholder="Senha"
+                    value={password}
+                    onChangeText={setPassword}
                     secureTextEntry
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Confirme a senha"
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    secureTextEntry
                 />
+                
                 <TouchableOpacity
                     style={styles.loginButton}
-                    onPress={() => router.replace("/(tabs)/home")}
+                    onPress={handleSubmit}
+                    disabled={!isFormValid()}
                 >
-                    <Text>Login</Text>
+                    <Text>Cadastro</Text>
                 </TouchableOpacity>
+
+                {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
+
                 <TouchableOpacity
                     style={styles.registerButton}
-                    onPress={() => router.replace("/register")}
+                    onPress={() => router.replace("/login")} // Redireciona para a tela de login
                 >
-                    <Text>Cadastrar</Text>
+                    <Text>Voltar para o login</Text>
                 </TouchableOpacity>
             </View>
         </LinearGradient>
@@ -108,6 +172,12 @@ const styles = StyleSheet.create({
         borderColor: "#fff",
         backgroundColor: "#fff",
         borderRadius: 5,
+        paddingLeft: 10,
+    },
+    errorText: {
+        color: "red",
+        fontSize: 12,
+        marginBottom: 5,
     },
 });
 
