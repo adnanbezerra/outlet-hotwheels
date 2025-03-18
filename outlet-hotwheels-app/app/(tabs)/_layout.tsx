@@ -42,6 +42,30 @@ export default function TabLayout() {
                     tabBarStyle: {
                         display: "none",
                     },
+                    headerLeft: () => (
+                        <TouchableOpacity
+                            onPress={() => router.push("/home")}
+                        >
+                            <Ionicons
+                                name="arrow-back"
+                                size={24}
+                                color="#fff"
+                                style={{ paddingLeft: 15, paddingRight: 15 }}
+                            />
+                        </TouchableOpacity>
+                    ),
+                    headerRight: () => (
+                        <TouchableOpacity
+                            onPress={() => router.push("/shopping-cart")}
+                        >
+                            <Ionicons
+                                name="cart"
+                                size={24}
+                                color="#fff"
+                                style={{ paddingRight: 15 }}
+                            />
+                        </TouchableOpacity>
+                    ),
                 }}
             />
             <Tabs.Screen
