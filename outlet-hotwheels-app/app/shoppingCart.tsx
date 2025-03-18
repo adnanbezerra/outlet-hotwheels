@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useCart } from "@/components/CartContext";
+import { formatPrice } from "@/shared/format-price";
 
 const ShoppingCart = () => {
     const { cart, removeFromCart } = useCart(); // Use o estado global do carrinho
@@ -16,7 +17,7 @@ const ShoppingCart = () => {
     const renderItem = ({ item }: { item: any }) => (
         <View style={styles.itemContainer}>
             <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemPrice}>R$ {item.price}</Text>
+            <Text style={styles.itemPrice}>{formatPrice(item.price)}</Text>
             <TouchableOpacity
                 style={styles.removeButton}
                 onPress={() => removeFromCart(item.id)} // Permite remover itens do carrinho
