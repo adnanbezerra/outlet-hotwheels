@@ -16,13 +16,13 @@ const login = () => {
     const [errorMessage, setErrorMessage] = useState("");
 
     // Função para validar CPF (simples, pode ser melhorada para validação completa)
-    const validateCPF = (cpf) => {
+    const validateCPF = (cpf:string) => {
         const cpfRegex = /^[0-9]{11}$/;
         return cpfRegex.test(cpf);
     };
 
     // Função para validar o email
-    const validateEmail = (email) => {
+    const validateEmail = (email:string) => {
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
         return emailRegex.test(email);
     };

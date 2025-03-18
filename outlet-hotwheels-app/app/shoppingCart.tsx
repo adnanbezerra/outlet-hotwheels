@@ -10,29 +10,34 @@ import { useRouter } from "expo-router";
 import { useCart } from "@/components/CartContext";
 
 const ShoppingCart = () => {
-    const { cart } = useCart();
+    const { cart, removeFromCart } = useCart(); // Use o estado global do carrinho
     const router = useRouter();
-
-    const cartItems = [
-        // Exemplo de itens no carrinho
-        { id: "1", name: "Hot Wheels Car 1", price: 10 },
-    ];
 
     const renderItem = ({ item }: { item: any }) => (
         <View style={styles.itemContainer}>
             <Text style={styles.itemName}>{item.name}</Text>
             <Text style={styles.itemPrice}>R$ {item.price}</Text>
+            <TouchableOpacity
+                style={styles.removeButton}
+                onPress={() => removeFromCart(item.id)} // Permite remover itens do carrinho
+            >
+                <Text style={styles.removeButtonText}>Remover</Text>
+            </TouchableOpacity>
         </View>
     );
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Carrinho de Compras</Text>
-            <FlatList
-                data={cartItems}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-            />
+            {cart.length === 0 ? (
+                <Text style={styles.emptyText}>Seu carrinho está vazio.</Text>
+            ) : (
+                <FlatList
+                    data={cart}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id.toString()}
+                />
+            )}
             <TouchableOpacity
                 style={styles.checkoutButton}
                 onPress={() => router.replace("/checkout")}
@@ -55,9 +60,16 @@ const styles = StyleSheet.create({
         color: "#F8DA2F",
         marginBottom: 20,
     },
+    emptyText: {
+        fontSize: 18,
+        color: "#fff",
+        textAlign: "center",
+        marginTop: 50,
+    },
     itemContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
+        alignItems: "center",
         padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: "#F8DA2F",
@@ -69,6 +81,15 @@ const styles = StyleSheet.create({
     itemPrice: {
         fontSize: 18,
         color: "#fff",
+    },
+    removeButton: {
+        backgroundColor: "#FF0000",
+        padding: 10,
+        borderRadius: 5,
+    },
+    removeButtonText: {
+        color: "#fff",
+        fontWeight: "bold",
     },
     checkoutButton: {
         backgroundColor: "#CE3E2F",
