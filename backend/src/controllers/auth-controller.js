@@ -2,22 +2,41 @@ import bcrypt from "bcrypt";
 import db from "../database/mongodb.js";
 
 export async function postLogin(req, res) {
-    const user = res.locals.user;
-    const { token, refreshToken } = res.locals;
+    try {
+        const { token, refreshToken } = res.locals;
+        const { _id, name, email } = res.locals.user; 
 
-    let response = { ...user, token, refreshToken };
-    delete response.password;
-
-    res.send(response).status(201);
+        res.status(200).send({
+            id: _id,
+            name,
+            email,
+            token,
+            refreshToken
+        });
+    } catch (error) {
+        res.status(500).send({ message: "Erro ao fazer login", error });
+    }
 }
 
 export async function postRegister(req, res) {
-    const newRegister = req.body;
+    try {
+        const { name, email, password } = req.body;
 
-    const hashedPassword = bcrypt.hashSync(newRegister.password, 10);
+        if (!name || !email || !password) {
+            return res.status(400).send({ message: "Todos os campos são obrigatórios." });
+        }
 
-    await db
-        .collection("users")
-        .insertOne({ ...newRegister, password: hashedPassword });
-    res.sendStatus(201);
+        const userExists = await db.collection("users").findOne({ email });
+        if (userExists) {
+            return res.status(409).send({ message: "E-mail já registrado." });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10); 
+
+        await db.collection("users").insertOne({ name, email, password: hashedPassword });
+
+        res.status(201).send({ message: "Usuário registrado com sucesso!" });
+    } catch (error) {
+        res.status(500).send({ message: "Erro ao registrar usuário", error });
+    }
 }
