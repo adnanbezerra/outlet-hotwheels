@@ -131,4 +131,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CheckoutScreen;
+export default CheckoutScreen;
