@@ -35,7 +35,7 @@ export function ProductCard({ id, title, price, image, stars, onAddToCart }: IPr
                                 price,
                                 quantity: 1,
                             });
-                            onAddToCart();
+                            onAddToCart?.();
                         }}
                     >
                         <Text style={styles.buttonText}>

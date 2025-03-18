@@ -59,7 +59,7 @@ const CheckoutScreen = () => {
             </TouchableOpacity>
 
             <Image
-                source={require('../assets/images/logo.png')}
+                source={require('../../assets/images/logo.png')}
                 style={styles.logo}
             />
         </View>

@@ -1,5 +1,7 @@
-import { Tabs } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import { router, Tabs } from "expo-router";
 import React from "react";
+import { TouchableOpacity } from "react-native";
 
 export default function TabLayout() {
     return (
@@ -15,6 +17,18 @@ export default function TabLayout() {
                     tabBarStyle: {
                         display: "none",
                     },
+                    headerRight: () => (
+                        <TouchableOpacity
+                            onPress={() => router.push("/shopping-cart")}
+                        >
+                            <Ionicons
+                                name="cart"
+                                size={24}
+                                color="#fff"
+                                style={{ paddingLeft: 15 }}
+                            />
+                        </TouchableOpacity>
+                    ),
                 }}
             />
             <Tabs.Screen
@@ -28,6 +42,56 @@ export default function TabLayout() {
                     tabBarStyle: {
                         display: "none",
                     },
+                }}
+            />
+            <Tabs.Screen
+                name="shopping-cart"
+                options={{
+                    title: "Carrinho de compras",
+                    headerStyle: {
+                        backgroundColor: "#CE3E2F",
+                    },
+                    headerTintColor: "#fff",
+                    tabBarStyle: {
+                        display: "none",
+                    },
+                    headerLeft: () => (
+                        <TouchableOpacity
+                            onPress={() => router.push("/home")}
+                        >
+                            <Ionicons
+                                name="arrow-back"
+                                size={24}
+                                color="#fff"
+                                style={{ marginRight: 15 }}
+                            />
+                        </TouchableOpacity>
+                    ),
+                }}
+            />
+            <Tabs.Screen
+                name="checkout"
+                options={{
+                    title: "Fazer pagamento",
+                    headerStyle: {
+                        backgroundColor: "#CE3E2F",
+                    },
+                    headerTintColor: "#fff",
+                    tabBarStyle: {
+                        display: "none",
+                    },
+                    headerLeft: () => (
+                        <TouchableOpacity
+                            onPress={() => router.push("/(tabs)/shopping-cart")}
+                        >
+                            <Ionicons
+                                name="arrow-back"
+                                size={24}
+                                color="#fff"
+                                style={{ marginRight: 15 }}
+                            />
+                        </TouchableOpacity>
+                    ),
                 }}
             />
         </Tabs>

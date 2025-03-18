@@ -4,36 +4,35 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useCart } from "@/components/CartContext";
-
+import { IProductCard } from "@/interfaces/product-card";
 
 const home = () => {
     const { products } = useProducts();
     const { addToCart } = useCart();
     const router = useRouter();
 
-    
-    const handleAddToCart = (product) => {
-        addToCart(product);
-        router.push("/shoppingCart");
+    const handleAddToCart = (product: IProductCard) => {
+        addToCart({
+            id: product.id,
+            name: product.title,
+            price: product.price,
+            quantity: 1,
+        });
+        router.push("/shopping-cart");
     };
 
     return (
         <View style={style.container}>
             <View style={style.header}>
                 <Text style={style.title}>Seu outlet de HotWheels barato!</Text>
-                <TouchableOpacity
-                    style={style.cartButton}
-                    onPress={() => router.push("/shoppingCart")}
-                >
-                    <Ionicons name="cart" size={24} color="#fff" />
-                </TouchableOpacity>
             </View>
             <Text style={style.subtitle}>Confira nosso catálogo abaixo:</Text>
             {products.map((product) => (
-                <ProductCard key={product.id} {...product} 
-                onAddToCart={() => handleAddToCart(product)} 
-            />
-                
+                <ProductCard
+                    key={product.id}
+                    {...product}
+                    onAddToCart={() => handleAddToCart(product)}
+                />
             ))}
         </View>
     );

@@ -5,5 +5,5 @@ export interface IProductCard {
     description: string;
     image: string;
     stars: number;
-    onAddToCart: () => void;
+    onAddToCart?: () => void;
 }
