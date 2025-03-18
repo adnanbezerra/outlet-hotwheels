@@ -11,7 +11,7 @@ import { formatPrice } from "@/shared/format-price";
 import { IProductCard } from "@/interfaces/product-card";
 import { router } from "expo-router";
 
-export function ProductCard({ id, title, price, image, stars }: IProductCard) {
+export function ProductCard({ id, title, price, image, stars, onAddToCart }: IProductCard) {
     const { addToCart } = useCart();
 
     return (
@@ -28,14 +28,15 @@ export function ProductCard({ id, title, price, image, stars }: IProductCard) {
                     />
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() =>
+                        onPress={() => {
                             addToCart({
                                 id,
                                 name: title,
                                 price,
                                 quantity: 1,
-                            })
-                        }
+                            });
+                            onAddToCart();
+                        }}
                     >
                         <Text style={styles.buttonText}>
                             <Ionicons

@@ -3,10 +3,19 @@ import useProducts from "@/hooks/useProducts";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { useCart } from "@/components/CartContext";
+
 
 const home = () => {
     const { products } = useProducts();
+    const { addToCart } = useCart();
     const router = useRouter();
+
+    
+    const handleAddToCart = (product) => {
+        addToCart(product);
+        router.push("/shoppingCart");
+    };
 
     return (
         <View style={style.container}>
@@ -21,7 +30,10 @@ const home = () => {
             </View>
             <Text style={style.subtitle}>Confira nosso catálogo abaixo:</Text>
             {products.map((product) => (
-                <ProductCard key={product.id} {...product} />
+                <ProductCard key={product.id} {...product} 
+                onAddToCart={() => handleAddToCart(product)} 
+            />
+                
             ))}
         </View>
     );
