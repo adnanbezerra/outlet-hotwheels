@@ -25,7 +25,7 @@ export default function TabLayout() {
                                 name="cart"
                                 size={24}
                                 color="#fff"
-                                style={{ paddingLeft: 15 }}
+                                style={{ paddingRight: 15 }}
                             />
                         </TouchableOpacity>
                     ),
@@ -63,7 +63,7 @@ export default function TabLayout() {
                                 name="arrow-back"
                                 size={24}
                                 color="#fff"
-                                style={{ marginRight: 15 }}
+                                style={{ paddingLeft: 15, paddingRight: 15 }}
                             />
                         </TouchableOpacity>
                     ),
