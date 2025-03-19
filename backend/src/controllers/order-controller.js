@@ -3,6 +3,11 @@ import * as orderService from "../service/carrinho/order-service.js";
 export async function createOrder(req, res) {
     try {
         const { userId, items } = req.body;
+
+        if (!userId || !items) {
+            return res.status(422).json({ error: "Dados do pedido são obrigatórios" });
+        }
+
         const order = await orderService.createOrder(userId, items);
         res.status(201).json(order);
     } catch (error) {
