@@ -11,18 +11,37 @@ import { deletePromotion } from "../controllers/delete-promotion-controller.js";
 import { updateProduct } from "../controllers/edit-product-controller.js";
 import { deleteProduct } from "../controllers/delete-product-controller.js";
 import { addProductToCart } from "../controllers/carrinho-controller.js";
+import { validatingToken } from "../middlewares/validate-auth.js"; // Importando o middleware de validação de token
 
 export const ProductsRouter = Router();
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+// Buscar produtos
 ProductsRouter.get("/product", getProducts);
-ProductsRouter.post("/product", upload.single("image"), postProduct);
+
+// Criar produto 
+ProductsRouter.post("/product", validatingToken, upload.single("image"), postProduct);
+
+// Buscar produto por ID
 ProductsRouter.get("/product/:uuid", getProductById);
-ProductsRouter.put("/product/:id", updateProduct);
-ProductsRouter.delete("/product/:id", deleteProduct);
-ProductsRouter.post("/product/:id/promotion", addPromotion);
-ProductsRouter.put("/product/:id/promotion", editPromotion);
-ProductsRouter.delete("/product/:id/promotion", deletePromotion);
-ProductsRouter.post("/product/:productId/add-to-cart", addProductToCart);
+
+// Editar produto 
+ProductsRouter.put("/product/:id", validatingToken, updateProduct);
+
+// Excluir produto 
+ProductsRouter.delete("/product/:id", validatingToken, deleteProduct);
+
+// Adicionar promoção
+ProductsRouter.post("/product/:id/promotion", validatingToken, addPromotion);
+
+// Editar promoção 
+ProductsRouter.put("/product/:id/promotion", validatingToken, editPromotion);
+
+// Excluir promoção 
+ProductsRouter.delete("/product/:id/promotion", validatingToken, deletePromotion);
+
+// Adicionar produto ao carrinho 
+ProductsRouter.post("/product/:productId/add-to-cart", validatingToken, addProductToCart);
+
