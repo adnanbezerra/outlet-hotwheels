@@ -28,7 +28,6 @@ ProductsRouter.get("/product", getProducts);
 // Criar produto
 ProductsRouter.post(
     "/product",
-    validateSchema(NewProductSchema),
     validatingToken,
     upload.single("image"),
     postProduct

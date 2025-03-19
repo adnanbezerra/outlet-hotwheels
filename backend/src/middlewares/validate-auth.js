@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { mongoConnection } from "../database/mongodb.js";
 import { ObjectId } from "mongodb"; 
+import { User } from "../models/user/index.js";
 
 dotenv.config();
 
@@ -28,7 +29,7 @@ export async function validatingToken(req, res, next) {
         }
 
         // Buscando o usuário no banco de dados
-        const user = await db.collection("users").findOne({ _id: new ObjectId(data.id) });
+        const user = await User.findOne({ _id: new ObjectId(data.id) });
 
         if (!user) {
             return res.status(404).send("Usuário não encontrado");

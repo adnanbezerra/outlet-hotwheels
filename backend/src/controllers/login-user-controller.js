@@ -18,7 +18,7 @@ export async function loginUserController(req, res) {
         }
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-            expiresIn: "1m",
+            expiresIn: "1y",
         });
 
         const userResponse = {
