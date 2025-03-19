@@ -5,12 +5,6 @@ import { User } from "../models/user/index.js";
 export async function loginUserController(req, res) {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-        return res
-            .status(400)
-            .json({ error: "E-mail e senha são obrigatórios" });
-    }
-
     try {
         const user = await User.findOne({ email });
 

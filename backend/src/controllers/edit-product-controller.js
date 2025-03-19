@@ -5,6 +5,10 @@ export async function updateProduct(req, res) {
 
     const updates = req.body;
 
+    if (!updates) {
+        return res.status(422).json({ error: "Faltam dados do produto" });
+    }
+
     delete updates.image;
 
     try {

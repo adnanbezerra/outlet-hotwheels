@@ -7,12 +7,6 @@ export async function addProductToCart(req, res) {
     const { productId } = req.params;
     const { userId, quantity } = req.body;
 
-    if (!quantity || !userId) {
-        return res
-            .status(400)
-            .json({ error: "quantity e userId são obrigatórios" });
-    }
-
     try {
         const updatedOrder = await addItemToCart(userId, productId, quantity);
         res.status(200).json(updatedOrder);

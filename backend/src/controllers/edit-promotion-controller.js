@@ -4,6 +4,10 @@ export async function editPromotion(req, res) {
     const { id } = req.params;
     const { promotion } = req.body;
 
+    if (!promotion) {
+        return res.status(422).json({ error: "Preencher dados da promoção" });
+    }
+
     try {
         const product = await Product.findById(id);
         if (!product) {
