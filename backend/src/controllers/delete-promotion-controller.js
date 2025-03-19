@@ -9,7 +9,7 @@ export async function deletePromotion(req, res) {
             return res.sendStatus(404);
         }
 
-        product.promotion = undefined; 
+        product.promotion = undefined;
         await product.save();
 
         res.status(200).json(product);

@@ -4,7 +4,6 @@ export async function cadastroUser(req, res) {
     try {
         const user = await createUser(req.body);
 
-        // Retornando apenas nome e email, sem o token
         res.status(201).json({
             message: "Usuário registrado com sucesso!",
             user: {

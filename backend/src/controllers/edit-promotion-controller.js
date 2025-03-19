@@ -10,7 +10,7 @@ export async function editPromotion(req, res) {
             return res.sendStatus(404);
         }
 
-        product.promotion = promotion; 
+        product.promotion = promotion;
         await product.save();
 
         res.status(200).json(product);

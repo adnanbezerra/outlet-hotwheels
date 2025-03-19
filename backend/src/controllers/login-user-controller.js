@@ -1,12 +1,14 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { User } from "../models/user/index.js"; 
+import { User } from "../models/user/index.js";
 
 export async function loginUserController(req, res) {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        return res.status(400).json({ error: "E-mail e senha são obrigatórios" });
+        return res
+            .status(400)
+            .json({ error: "E-mail e senha são obrigatórios" });
     }
 
     try {
@@ -21,11 +23,9 @@ export async function loginUserController(req, res) {
             return res.status(401).json({ error: "Senha incorreta" });
         }
 
-        const token = jwt.sign(
-            { id: user._id }, 
-            process.env.JWT_SECRET,  
-            { expiresIn: "1h" }  
-        );
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+            expiresIn: "1h",
+        });
 
         const userResponse = {
             name: user.name,
@@ -34,9 +34,15 @@ export async function loginUserController(req, res) {
             updatedAt: user.updatedAt,
         };
 
-        return res.status(200).json({ message: "Login bem-sucedido", user: userResponse, token });
+        return res
+            .status(200)
+            .json({ message: "Login bem-sucedido", user: userResponse, token });
     } catch (error) {
         console.error("Erro no login:", error);
-        return res.status(500).json({ error: "Erro interno no servidor. Tente novamente mais tarde." });
+        return res
+            .status(500)
+            .json({
+                error: "Erro interno no servidor. Tente novamente mais tarde.",
+            });
     }
 }

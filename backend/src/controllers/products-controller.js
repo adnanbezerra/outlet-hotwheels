@@ -25,7 +25,7 @@ export async function postProduct(req, res) {
 
 export async function getProductById(req, res) {
     const { uuid } = req.params;
-    
+
     const product = await getProductByIdService(uuid);
 
     if (!product) {

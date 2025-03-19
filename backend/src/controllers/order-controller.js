@@ -15,7 +15,7 @@ export async function getOrderById(req, res) {
         const { orderId } = req.params;
         const order = await orderService.getOrderById(orderId);
         if (!order) {
-            return res.status(404).json({ error: 'Pedido não encontrado' });
+            return res.status(404).json({ error: "Pedido não encontrado" });
         }
         res.json(order);
     } catch (error) {
@@ -27,7 +27,11 @@ export async function addItemToOrder(req, res) {
     try {
         const { orderId } = req.params;
         const { productId, quantity } = req.body;
-        const updatedOrder = await orderService.addItemToOrder(orderId, productId, quantity);
+        const updatedOrder = await orderService.addItemToOrder(
+            orderId,
+            productId,
+            quantity
+        );
         res.json(updatedOrder);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -63,7 +67,10 @@ export async function updateOrderStatus(req, res) {
     }
 
     try {
-        const updatedOrder = await orderService.updateOrderStatus(orderId, status);
+        const updatedOrder = await orderService.updateOrderStatus(
+            orderId,
+            status
+        );
         res.status(200).json(updatedOrder);
     } catch (error) {
         res.status(400).json({ error: error.message });
