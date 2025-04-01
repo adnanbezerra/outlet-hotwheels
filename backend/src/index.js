@@ -22,9 +22,11 @@ ws.on("connection", (client) => {
     clients.add(client);
     console.log("Client connected");
     client.on("message", (message) => {
+        const parsedMessage = message.toString();
+
         for (const client of clients) {
             if (client.readyState === WebSocket.OPEN) {
-                client.send(message);
+                client.send(parsedMessage);
             }
         }
     });
