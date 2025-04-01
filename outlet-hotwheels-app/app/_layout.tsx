@@ -33,10 +33,6 @@ export default function RootLayout() {
                     name="register"
                     options={{ headerShown: false }}
                 />
-                <Stack.Screen
-                    name="shopping-cart"
-                    options={{ headerShown: false }}
-                />
             </Stack>
         </CartProvider>
     );
