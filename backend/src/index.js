@@ -6,24 +6,48 @@ import { UsersRouter } from "./routers/users-routers.js";
 import ProtectedRouter from "./routers/protected-router.js";
 import OrderRouter from "./routers/order-routers.js";
 import carrinhoRouter from "./routers/carrinho-router.js";
+import http from "http";
+import { WebSocketServer } from "ws";
 
 dotenv.config();
 
 const PORT = process.env.PORT;
 
-const server = express();
+const app = express();
 
-server.use(express.json({ limit: "50mb" }));
-server.use(express.urlencoded({ limit: "50mb", extended: true }));
+const server = http.createServer(app);
+const ws = new WebSocketServer({ server });
 
-server.use(cors());
-server.use(express.json());
+ws.on("connection", (client) => {
+    clients.add(client);
+    console.log("Client connected");
+    client.on("message", (message) => {
+        for (const client of clients) {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(message);
+            }
+        }
+    });
 
-server.use(ProductsRouter);
-server.use(UsersRouter);
-server.use(ProtectedRouter);
-server.use(OrderRouter);
-server.use(carrinhoRouter);
+    client.on("close", () => {
+        clients.delete(client);
+        console.log("Client disconnected");
+    });
+});
+
+const clients = new Set();
+
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
+app.use(cors());
+app.use(express.json());
+
+app.use(ProductsRouter);
+app.use(UsersRouter);
+app.use(ProtectedRouter);
+app.use(OrderRouter);
+app.use(carrinhoRouter);
 
 server.listen(PORT, () => {
     console.log(`It's alive on port ${PORT}`);
