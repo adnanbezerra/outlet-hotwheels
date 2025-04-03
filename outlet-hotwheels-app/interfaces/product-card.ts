@@ -1,9 +1,12 @@
 export interface IProductCard {
-    id: number;
-    title: string;
+    _id: number;
+    name: string;
     price: number;
     description: string;
-    image: string;
+    image: {
+        contentType: string;
+        base64Image: string;
+    };
     stars: number;
     onAddToCart?: () => void;
 }

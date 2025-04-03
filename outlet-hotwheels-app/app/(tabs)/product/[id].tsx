@@ -11,7 +11,7 @@ export default function ProductPage() {
 
     const { products } = useProducts();
 
-    const product = products.find((item) => item.id === +id);
+    const product = products.find((item) => item._id === +id);
 
     if (!product) {
         return (
@@ -25,7 +25,7 @@ export default function ProductPage() {
         <View style={style.container}>
             <View style={{ flexDirection: "row" }}>
                 <View style={style.leftSide}>
-                    <Text style={style.title}>{product.title}</Text>
+                    <Text style={style.title}>{product.name}</Text>
                     <View
                         style={{
                             flex: 1,
@@ -45,7 +45,11 @@ export default function ProductPage() {
                 </View>
                 <View style={style.rightSide}>
                     <Image
-                        source={{ uri: product.image }}
+                        source={{
+                            uri: product.image
+                                ? `data:${product.image?.contentType};base64,${product.image?.base64Image}`
+                                : "./caixa.png",
+                        }}
                         style={{ width: 200, height: 200, borderRadius: 10 }}
                     />
                     <Text style={style.descriptionTitle}>

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 
 // Interface para representar um item no carrinho
 interface CartItem {
-    id: number;
+    _id: number;
     name: string;
     price: number;
     quantity: number;
@@ -26,11 +26,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Função para adicionar um item ao carrinho
     const addToCart = (item: CartItem) => {
         setCart((prevCart) => {
-            const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
+            const existingItem = prevCart.find((cartItem) => cartItem._id === item._id);
             if (existingItem) {
                 // Se o item já existe, aumenta a quantidade
                 return prevCart.map((cartItem) =>
-                    cartItem.id === item.id
+                    cartItem._id === item._id
                         ? { ...cartItem, quantity: cartItem.quantity + 1 }
                         : cartItem
                 );
@@ -43,7 +43,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Função para remover um item do carrinho
     const removeFromCart = (id: number) => {
-        setCart((prevCart) => prevCart.filter((item) => item.id !== id));
+        setCart((prevCart) => prevCart.filter((item) => item._id !== id));
     };
 
     // Função para limpar o carrinho

@@ -11,27 +11,37 @@ import { formatPrice } from "@/shared/format-price";
 import { IProductCard } from "@/interfaces/product-card";
 import { router } from "expo-router";
 
-export function ProductCard({ id, title, price, image, stars, onAddToCart }: IProductCard) {
+export function ProductCard({
+    _id,
+    name,
+    price,
+    image,
+    stars,
+    onAddToCart,
+}: IProductCard) {
     const { addToCart } = useCart();
+    const imgSource = image
+        ? `data:${image?.contentType};base64,${image?.base64Image}`
+        : "./caixa.png";
 
     return (
         <TouchableWithoutFeedback
             onPress={() => {
-                router.push(`/product/${id}`);
+                router.push(`/product/${_id}`);
             }}
         >
             <View style={styles.container}>
                 <View>
                     <Image
-                        source={{ uri: image }}
+                        source={{ uri: imgSource }}
                         style={{ width: 100, height: 100 }}
                     />
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => {
                             addToCart({
-                                id,
-                                name: title,
+                                _id,
+                                name: name,
                                 price,
                                 quantity: 1,
                             });
@@ -48,7 +58,7 @@ export function ProductCard({ id, title, price, image, stars, onAddToCart }: IPr
                     </TouchableOpacity>
                 </View>
                 <View style={styles.informationContainer}>
-                    <Text style={styles.title}>{title}</Text>
+                    <Text style={styles.name}>{name}</Text>
                     <View
                         style={{
                             flex: 1,
@@ -102,7 +112,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
     },
-    title: {
+    name: {
         fontSize: 16,
         marginBottom: 5,
     },
