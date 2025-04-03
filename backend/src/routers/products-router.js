@@ -15,17 +15,14 @@ import { validatingToken } from "../middlewares/validate-auth.js";
 import { NewPromotionSchema } from "../schemas/new-promotion.js";
 import { validateSchema } from "../middlewares/validate-joi-schema.js";
 import { AddProductToCart } from "../schemas/add-product-to-cart.js";
-import { NewProductSchema } from "../schemas/new-product.js";
 
 export const ProductsRouter = Router();
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Buscar produtos
 ProductsRouter.get("/product", getProducts);
 
-// Criar produto
 ProductsRouter.post(
     "/product",
     validatingToken,
@@ -33,16 +30,12 @@ ProductsRouter.post(
     postProduct
 );
 
-// Buscar produto por ID
 ProductsRouter.get("/product/:uuid", getProductById);
 
-// Editar produto
 ProductsRouter.put("/product/:id", validatingToken, updateProduct);
 
-// Excluir produto
 ProductsRouter.delete("/product/:id", validatingToken, deleteProduct);
 
-// Adicionar promoção
 ProductsRouter.post(
     "/product/:id/promotion",
     validateSchema(NewPromotionSchema),
@@ -50,17 +43,14 @@ ProductsRouter.post(
     addPromotion
 );
 
-// Editar promoção
 ProductsRouter.put("/product/:id/promotion", validatingToken, editPromotion);
 
-// Excluir promoção
 ProductsRouter.delete(
     "/product/:id/promotion",
     validatingToken,
     deletePromotion
 );
 
-// Adicionar produto ao carrinho
 ProductsRouter.post(
     "/product/:productId/add-to-cart",
     validateSchema(AddProductToCart),
