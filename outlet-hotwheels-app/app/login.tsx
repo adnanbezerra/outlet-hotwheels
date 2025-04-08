@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Text,
     View,
@@ -6,12 +6,39 @@ import {
     TouchableOpacity,
     TextInput,
     Image,
+    Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 
-const login = () => {
+const Login = () => {
     const router = useRouter();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const handleLogin = async () => {
+        try {
+            const response = await fetch("http://localhost:3000/user/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                Alert.alert("Sucesso", data.message);
+                // Salve o token JWT (exemplo usando AsyncStorage)
+                // await AsyncStorage.setItem("token", data.token);
+                router.replace("/(tabs)/home"); // Redireciona para a página inicial
+            } else {
+                setErrorMessage(data.error || "Erro ao fazer login");
+            }
+        } catch (error) {
+            console.error("Erro:", error);
+            setErrorMessage("Erro ao conectar ao servidor");
+        }
+    };
 
     return (
         <LinearGradient
@@ -25,23 +52,30 @@ const login = () => {
                     <Image
                         source={require("../assets/images/logo.png")}
                         style={styles.logo}
-                    ></Image>
+                    />
                     <Text style={styles.title}>Outlet Hotwheels</Text>
                 </View>
                 <TextInput
                     style={styles.input}
                     placeholder="E-mail"
                     textContentType="emailAddress"
+                    value={email}
+                    onChangeText={setEmail}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Senha"
                     textContentType="password"
                     secureTextEntry
+                    value={password}
+                    onChangeText={setPassword}
                 />
+                {errorMessage ? (
+                    <Text style={styles.errorText}>{errorMessage}</Text>
+                ) : null}
                 <TouchableOpacity
                     style={styles.loginButton}
-                    onPress={() => router.replace("/(tabs)/home")}
+                    onPress={handleLogin}
                 >
                     <Text>Login</Text>
                 </TouchableOpacity>
@@ -107,7 +141,12 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         borderRadius: 5,
         width: 200,
+        padding: 10,
+    },
+    errorText: {
+        color: "red",
+        marginBottom: 10,
     },
 });
 
-export default login;
+export default Login;

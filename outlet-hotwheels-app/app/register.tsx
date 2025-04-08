@@ -40,9 +40,30 @@ const login = () => {
         return true;
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (isFormValid()) {
-            router.replace("/(tabs)/home");
+            try {
+                const response = await fetch("http://localhost:3000/user/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        name: fullName, // Envie o nome como "name"
+                        email,
+                        password,
+                    }),
+                });
+    
+                const data = await response.json();
+                if (response.ok) {
+                    alert(data.message);
+                    router.replace("/login"); // Redireciona para a tela de login
+                } else {
+                    setErrorMessage(data.error || "Erro ao cadastrar");
+                }
+            } catch (error) {
+                console.error("Erro:", error);
+                setErrorMessage("Erro ao conectar ao servidor");
+            }
         } else {
             setErrorMessage("Preencha todos os campos corretamente.");
         }
