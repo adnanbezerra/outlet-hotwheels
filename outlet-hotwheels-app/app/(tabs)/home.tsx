@@ -21,10 +21,11 @@ const home = () => {
         });
         router.push("/shopping-cart");
     };
+
     const handleLogout = async () => {
         try {
-            await AsyncStorage.removeItem("token"); // Remove o token JWT
-            router.replace("/login"); // Redireciona para a tela de login
+            await AsyncStorage.removeItem("token");
+            router.replace("/login");
         } catch (error) {
             console.error("Erro ao fazer logout:", error);
         }

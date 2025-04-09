@@ -1,7 +1,9 @@
+import { API_URL } from "@/constants/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useContext, useState } from "react";
 
 // Interface para representar um item no carrinho
-interface CartItem {
+export interface CartItem {
     _id: number;
     name: string;
     price: number;
@@ -10,10 +12,11 @@ interface CartItem {
 
 // Interface para o tipo de contexto do carrinho
 interface CartContextType {
-    cart: CartItem[];
+    cart: any;
     addToCart: (item: CartItem) => void;
     removeFromCart: (id: number) => void;
     clearCart: () => void;
+    setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
 }
 
 // Criação do contexto do carrinho
@@ -24,21 +27,40 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [cart, setCart] = useState<CartItem[]>([]);
 
     // Função para adicionar um item ao carrinho
-    const addToCart = (item: CartItem) => {
+    const addToCart = async (item: CartItem) => {
         setCart((prevCart) => {
             const existingItem = prevCart.find((cartItem) => cartItem._id === item._id);
             if (existingItem) {
-                // Se o item já existe, aumenta a quantidade
+                // Atualiza a quantidade do item existente
                 return prevCart.map((cartItem) =>
                     cartItem._id === item._id
                         ? { ...cartItem, quantity: cartItem.quantity + 1 }
                         : cartItem
                 );
             } else {
-                // Se o item não existe, adiciona ao carrinho com quantidade 1
+                // Adiciona um novo item ao carrinho
                 return [...prevCart, { ...item, quantity: 1 }];
             }
         });
+
+        // Envia os dados para o back-end      
+        const token = await AsyncStorage.getItem("token");
+        fetch(`${API_URL}/cart/${item._id}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ quantity: item.quantity || 1 }), // Certifique-se de enviar o userId
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Erro ao atualizar o carrinho");
+                }
+                return response.json();
+            })
+            .then((data) => console.log("Carrinho atualizado no back-end:", data))
+            .catch((error) => console.error("Erro ao atualizar o carrinho:", error));
     };
 
     // Função para remover um item do carrinho
@@ -52,7 +74,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
+        <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, setCart }}>
             {children}
         </CartContext.Provider>
     );

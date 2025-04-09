@@ -5,11 +5,27 @@ import { removeItemFromCart } from "../service/carrinho/cart-service.js";
 
 export async function addProductToCart(req, res) {
     const { productId } = req.params;
-    const { userId, quantity } = req.body;
+    const { user } = res.locals;
+    const userId = user._id;
+
+    if (!userId) {
+        return res.status(401).json({ error: "Usuário não autenticado" });
+    }
+    if (!productId) {
+        return res.status(400).json({ error: "ID do produto não fornecido" });
+    }
+    if (!req.body || !req.body.quantity) {
+        return res.status(400).json({ error: "Quantidade não fornecida" });
+    }
+    if (req.body.quantity <= 0) {
+        return res.status(400).json({ error: "Quantidade inválida" });
+    }
+
+    const { quantity } = req.body;
 
     try {
-        const updatedOrder = await addItemToCart(userId, productId, quantity);
-        res.status(200).json(updatedOrder);
+        const updatedOrder = await addItemToCart(userId, productId, quantity); // Chama o serviço
+        res.status(200).json(updatedOrder); // Retorna o carrinho atualizado
     } catch (error) {
         console.error("Erro ao adicionar produto ao carrinho:", error);
         res.status(500).json({ error: error.message });
@@ -17,7 +33,12 @@ export async function addProductToCart(req, res) {
 }
 
 export async function viewCart(req, res) {
-    const { userId } = req.params;
+    const user = res.locals.user;
+    const userId = user._id;
+    if (!userId) {
+        return res.status(401).json({ error: "Usuário não autenticado" });
+    }
+
     try {
         const cart = await getCart(userId);
         res.status(200).json(cart);

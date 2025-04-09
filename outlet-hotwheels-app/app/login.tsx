@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = () => {
     const router = useRouter();
@@ -29,7 +30,7 @@ const Login = () => {
             if (response.ok) {
                 Alert.alert("Sucesso", data.message);
                 // Salve o token JWT (exemplo usando AsyncStorage)
-                // await AsyncStorage.setItem("token", data.token);
+                await AsyncStorage.setItem("token", data.token);
                 router.replace("/(tabs)/home"); // Redireciona para a página inicial
             } else {
                 setErrorMessage(data.error || "Erro ao fazer login");

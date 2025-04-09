@@ -1,8 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+// Definir os parâmetros das telas da navegação
+type RootStackParamList = {
+    CartScreen: undefined;
+    CheckoutScreen: undefined; // Adicione outras telas conforme necessário
+};
 
 // Definir o tipo correto para a navegação
 type NavigationProp = StackNavigationProp<RootStackParamList, 'CartScreen'>;
@@ -10,9 +15,26 @@ type NavigationProp = StackNavigationProp<RootStackParamList, 'CartScreen'>;
 const CartScreen = () => {
     const navigation = useNavigation<NavigationProp>();
 
+    // Exemplo de dados do carrinho para evitar erro
+    const cart = [
+        { id: 1, name: 'Produto 1' },
+        { id: 2, name: 'Produto 2' },
+        // Adicione mais itens conforme necessário
+    ];
+
+    const renderItem = ({ item }: { item: { id: number; name: string } }) => (
+        <Text>{item.name}</Text>
+    );
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Carrinho</Text>
+            {/* FlatList para exibir os itens do carrinho */}
+            <FlatList
+                data={cart}
+                renderItem={renderItem}
+                keyExtractor={(item) => (item.id ? item.id.toString() : Math.random().toString())}
+            />
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => navigation.navigate('CheckoutScreen')}

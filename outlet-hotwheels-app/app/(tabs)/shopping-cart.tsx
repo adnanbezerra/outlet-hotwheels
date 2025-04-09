@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     View,
     Text,
@@ -7,20 +7,48 @@ import {
     TouchableOpacity,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { useCart } from "@/components/CartContext";
+import { CartItem, useCart } from "@/components/CartContext";
 import { formatPrice } from "@/shared/format-price";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "@/constants/api";
 
 const shoppingCart = () => {
-    const { cart, removeFromCart } = useCart(); // Use o estado global do carrinho
+    const { cart, removeFromCart, setCart } = useCart(); // Use o estado global do carrinho
     const router = useRouter();
+
+    const fetchCartItems = async () => {
+        try {
+            const token = await AsyncStorage.getItem("token");
+            const response = await fetch(`${API_URL}/cart`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            const data: any = await response.json();
+
+            if (typeof data.message === "string") {
+                throw new Error("Erro ao buscar os itens do carrinho");
+            } else setCart(data);
+        } catch (error) {
+            console.error("Erro ao buscar os itens do carrinho:", error);
+        }
+    };
+
+    // Busca os itens do carrinho ao montar o componente
+    useEffect(() => {
+        fetchCartItems();
+    }, []);
 
     const renderItem = ({ item }: { item: any }) => (
         <View style={styles.itemContainer}>
-            <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemPrice}>{formatPrice(item.price)}</Text>
+            <Text style={styles.itemName}>{item.productId.name}</Text>
+            <Text style={styles.itemPrice}>{formatPrice(item.productId.price)}</Text>
             <TouchableOpacity
                 style={styles.removeButton}
-                onPress={() => removeFromCart(item.id)} // Permite remover itens do carrinho
+                onPress={() => removeFromCart(item.productId._id)} // Corrigido para usar _id
             >
                 <Text style={styles.removeButtonText}>Remover</Text>
             </TouchableOpacity>
@@ -49,14 +77,16 @@ const shoppingCart = () => {
 
     return (
         <View style={styles.container}>
-            {cart.length > 0 && (
+            {cart.items.length > 0 && (
                 <FlatList
-                    data={cart}
+                    data={cart.items}
                     renderItem={renderItem}
-                    keyExtractor={(item) => item.id.toString()}
+                    keyExtractor={(item, index) =>
+                        item?._id ? item._id.toString() : `key-${index}`
+                    }
                 />
             )}
-            {cart.length > 0 && (
+            {cart.items.length > 0 && (
                 <TouchableOpacity
                     style={styles.checkoutButton}
                     onPress={() => router.replace("/checkout")}
