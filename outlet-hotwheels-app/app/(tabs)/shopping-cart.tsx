@@ -53,7 +53,7 @@ const shoppingCart = () => {
                 <FlatList
                     data={cart}
                     renderItem={renderItem}
-                    keyExtractor={(item) => item.id.toString()}
+                    keyExtractor={(item) => item._id.toString()}
                 />
             )}
             {cart.length > 0 && (
