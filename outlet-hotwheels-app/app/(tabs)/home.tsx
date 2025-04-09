@@ -1,14 +1,15 @@
 import { ProductCard } from "@/components/ProductCard";
 import useProducts from "@/hooks/useProducts";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { useCart } from "@/components/CartContext";
+import * as SecureStore from "expo-secure-store";
 import { IProductCard } from "@/interfaces/product-card";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const home = () => {
     const { products } = useProducts();
     const { addToCart } = useCart();
-    
     const router = useRouter();
 
     const handleAddToCart = (product: IProductCard) => {
@@ -20,6 +21,14 @@ const home = () => {
         });
         router.push("/shopping-cart");
     };
+    const handleLogout = async () => {
+        try {
+            await AsyncStorage.removeItem("token"); // Remove o token JWT
+            router.replace("/login"); // Redireciona para a tela de login
+        } catch (error) {
+            console.error("Erro ao fazer logout:", error);
+        }
+    };
 
     if (products.length === 0) {
         return (
@@ -28,6 +37,12 @@ const home = () => {
                     <Text style={style.title}>
                         Seu outlet de HotWheels barato!
                     </Text>
+                    <TouchableOpacity
+                        style={style.logoutButton}
+                        onPress={handleLogout}
+                    >
+                        <Text style={style.logoutButtonText}>Logout</Text>
+                    </TouchableOpacity>
                 </View>
                 <Text style={style.subtitle}>
                     Sem itens cadastrados para o momento
@@ -40,6 +55,12 @@ const home = () => {
         <View style={style.container}>
             <View style={style.header}>
                 <Text style={style.title}>Seu outlet de HotWheels barato!</Text>
+                <TouchableOpacity
+                    style={style.logoutButton}
+                    onPress={handleLogout}
+                >
+                    <Text style={style.logoutButtonText}>Logout</Text>
+                </TouchableOpacity>
             </View>
             <Text style={style.subtitle}>Confira nosso catálogo abaixo:</Text>
             {products.map((product) => (
@@ -75,12 +96,12 @@ const style = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
     },
-    cartButton: {
+    logoutButton: {
         backgroundColor: "#CE3E2F",
         padding: 10,
         borderRadius: 5,
     },
-    cartButtonText: {
+    logoutButtonText: {
         fontSize: 16,
         color: "#fff",
     },
