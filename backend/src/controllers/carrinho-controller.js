@@ -50,10 +50,16 @@ export async function viewCart(req, res) {
 
 export async function completeOrderController(req, res) {
     const { orderId } = req.params;
+    console.log("Iniciando finalização do pedido...");
+    console.log("ID do pedido recebido:", orderId);
+
     try {
         const updatedOrder = await completeOrder(orderId);
+        console.log("Pedido finalizado com sucesso:", updatedOrder);
+
         res.status(200).json(updatedOrder);
     } catch (error) {
+        console.error("Erro ao finalizar o pedido:", error);
         res.status(400).json({ error: error.message });
     }
 }
