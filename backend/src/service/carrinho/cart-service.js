@@ -20,7 +20,7 @@ export async function removeItemFromCart(orderId, orderItemId) {
         throw new Error("Pedido não encontrado");
     }
 
-    const orderItem = order.items.find(item => item._id.toString() === orderItemId);
+    const orderItem = order.items.find(item => item.productId._id.toString() === orderItemId);
     if (!orderItem) {
         throw new Error("Item não encontrado no pedido");
     }

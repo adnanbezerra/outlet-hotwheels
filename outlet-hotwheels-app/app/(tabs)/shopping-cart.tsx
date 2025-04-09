@@ -48,7 +48,7 @@ const shoppingCart = () => {
             <Text style={styles.itemPrice}>{formatPrice(item.productId.price)}</Text>
             <TouchableOpacity
                 style={styles.removeButton}
-                onPress={() => removeFromCart(item.productId._id)} // Corrigido para usar _id
+                onPress={() => removeFromCart(item.productId._id)}
             >
                 <Text style={styles.removeButtonText}>Remover</Text>
             </TouchableOpacity>

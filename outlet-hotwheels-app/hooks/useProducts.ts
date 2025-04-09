@@ -11,8 +11,6 @@ const useProducts = () => {
         setLoading(true);
         fetch(`${API_URL}/product`)
             .then((response) => {
-                console.log({ response });
-
                 return response.json();
             })
             .then((data: IProductCard[]) => {
