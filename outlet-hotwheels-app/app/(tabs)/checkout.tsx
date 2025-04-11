@@ -1,16 +1,65 @@
+import { useCart } from '@/components/CartContext';
+import { API_URL } from '@/constants/api';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const CheckoutScreen = () => {
     const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
     const [paymentConfirmed, setPaymentConfirmed] = useState(false);
+    const [orderId] = useState(''); 
+    const { cart } = useCart();
 
     const handlePaymentSelection = (method: string) => {
         setSelectedPayment(method);
     };
 
-    const handleConfirmPayment = () => {
-        setPaymentConfirmed(true);
+    const handleConfirmPayment = async () => {
+        
+        if (!selectedPayment) {
+            console.error("Nenhum método de pagamento foi selecionado.");
+            return;
+        }
+    
+        try {
+            // const response = await fetch(`${API_URL}/orders/${cart._id}/confirm-payment`, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({
+            //         orderId, // Passa o orderId como parte do corpo da requisição
+            //         paymentDetails: { method: selectedPayment },
+            //     }),
+            // });
+            const token = await AsyncStorage.getItem("token");
+        const response = await fetch(`${API_URL}/orders`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                userId: cart.userId, // ID do usuário
+                items: cart.items.map((item: any) => ({
+                    productId: item.productId._id,
+                    quantity: item.quantity,
+                })),
+            }),
+        });
+
+    
+            if (!response.ok) {
+                throw new Error('Erro ao confirmar pagamento');
+            }
+    
+            const data = await response.json();
+            console.log('Pagamento confirmado:', data);
+            setPaymentConfirmed(true);
+        } catch (error) {
+            console.error('Erro:', error);
+        }
     };
 
     return (
@@ -50,7 +99,8 @@ const CheckoutScreen = () => {
 
             <TouchableOpacity
                 style={styles.confirmButton}
-                onPress={handleConfirmPayment}
+                onPress={() => {
+                    handleConfirmPayment()}}
                 disabled={!selectedPayment || paymentConfirmed}
             >
                 <Text style={styles.confirmButtonText}>

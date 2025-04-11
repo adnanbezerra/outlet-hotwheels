@@ -3,6 +3,22 @@ import Order from "../../models/carrinho/order.js";
 import OrderItem from "../../models/carrinho/orderItem.js";
 import { Product } from "../../models/product/index.js";
 
+/// Confirma o pagamento de um pedido
+export async function confirmPayment(orderId, paymentDetails) {
+    const order = await Order.findById(orderId);
+    if (!order) {
+        throw new Error("Pedido não encontrado");
+    }
+
+    order.status = "completed";
+    order.paymentDetails = paymentDetails; 
+
+    await order.save();
+    
+
+    return order;
+}
+
 export async function createOrder(userId, items) {
 
     const itemsWithPrice = await Promise.all(
@@ -13,7 +29,9 @@ export async function createOrder(userId, items) {
             }
             return {
                 productId: item.productId,
+                //name: product.name, // add nome do produto
                 quantity: item.quantity,
+                //unitPrice: product.price, // add preço unitário
                 price: product.price * item.quantity,
             };
         })
@@ -21,7 +39,16 @@ export async function createOrder(userId, items) {
 
     const totalPrice = itemsWithPrice.reduce((total, item) => total + item.price, 0);
 
-    const order = new Order({ userId, items: itemsWithPrice, totalPrice, status: "pending" });
+    const order = new Order({ 
+        userId, 
+        items: itemsWithPrice, 
+        totalPrice, 
+        status: "pending",
+        createdAt: new Date() 
+    }); // add data da compra
+
+    console.log("Pedido a ser salvo no banco de dados:", order); 
+
     await order.save();
     return order;
 }
