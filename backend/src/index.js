@@ -8,6 +8,7 @@ import OrderRouter from "./routers/order-routers.js";
 import carrinhoRouter from "./routers/carrinho-router.js";
 import http from "http";
 import { WebSocketServer } from "ws";
+import AIRouter from "./routers/ai-routes.js";
 
 dotenv.config();
 
@@ -50,6 +51,7 @@ app.use(UsersRouter);
 app.use(ProtectedRouter);
 app.use(OrderRouter);
 app.use(carrinhoRouter);
+app.use(AIRouter);
 
 server.listen(PORT, () => {
     console.log(`It's alive on port ${PORT}`);

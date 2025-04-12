@@ -18,7 +18,7 @@ async function saveImage(name, file) {
 }
 
 export async function createProduct(productData, file) {
-    const { name, price } = productData;
+    const { name, price, description, stars } = productData;
 
     if (!name || !price) {
         throw new Error("Os campos 'name' e 'price' são obrigatórios.");
@@ -30,6 +30,8 @@ export async function createProduct(productData, file) {
         const newProduct = new Product({
             name,
             price,
+            stars,
+            description,
             image: savedImage ? savedImage._id : null,
         });
 

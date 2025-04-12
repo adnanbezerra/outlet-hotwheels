@@ -1,0 +1,3 @@
+ID:67dabc264479ca5228ef0076;NOME:Carrinho de cria;PRECO:2900
+ID:67ee9707f564d182640d5301;NOME:Carrinho do balacobaco;PRECO:5000;DESCRIÇÃO:Um carrinho Hot Wheels preto esportivo, com design aerodinâmico e detalhes agressivos.
+ID:67ee9783f564d182640d5305;NOME:Carrinho prectvs;PRECO:2000;DESCRIÇÃO:Um carrinho Hot Wheels verde do balacobaco, com design aerodinâmico e detalhes alienígenas.

@@ -25,7 +25,7 @@ ProductsRouter.get("/product", getProducts);
 
 ProductsRouter.post(
     "/product",
-    validatingToken,
+    // validatingToken,
     upload.single("image"),
     postProduct
 );
