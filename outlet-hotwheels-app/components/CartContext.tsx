@@ -14,7 +14,7 @@ interface CartContextType {
     addToCart: (item: CartItem) => void;
     removeFromCart: (id: number) => void;
     clearCart: () => void;
-    setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
+    setCart: React.Dispatch<React.SetStateAction<any>>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);

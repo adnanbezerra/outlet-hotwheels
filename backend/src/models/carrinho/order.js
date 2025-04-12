@@ -5,7 +5,9 @@ const orderSchema = new mongoose.Schema({
     items: [
         {
             productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
+            //name: { type: String, required: true }, // Nome do produto, te que estar nas infos de compra mas não está funcionando
             quantity: { type: Number, required: true },
+            //price: { type: Number, required: true }, // Preço unitário
             price: { type: Number, required: true }
         }
     ],
@@ -15,6 +17,7 @@ const orderSchema = new mongoose.Schema({
         enum: ["pending", "completed", "canceled"], 
         default: "pending" 
     },
+    paymentDetails: { type: Object },
     createdAt: { type: Date, default: Date.now }
 });
 

@@ -30,6 +30,7 @@ const shoppingCart = () => {
             const data: any = await response.json();
 
             if (typeof data.message === "string") {
+                setCart({ items: [] });
                 throw new Error("Erro ao buscar os itens do carrinho");
             } else setCart(data);
         } catch (error) {
@@ -42,20 +43,24 @@ const shoppingCart = () => {
         fetchCartItems();
     }, []);
 
-    const renderItem = ({ item }: { item: any }) => (
+    const renderItem = ({ item }: { item: any }) => {
+        console.log({item});
+        
+
+        return (
         <View style={styles.itemContainer}>
-            <Text style={styles.itemName}>{item.productId.name}</Text>
-            <Text style={styles.itemPrice}>{formatPrice(item.productId.price)}</Text>
+            <Text style={styles.itemName}>{item.productId?.name || item.name}</Text>
+            <Text style={styles.itemPrice}>{formatPrice(item.productId?.price || item.price)}</Text>
             <TouchableOpacity
                 style={styles.removeButton}
-                onPress={() => removeFromCart(item.productId._id)}
+                onPress={() => removeFromCart(item.productId?._id || item._id)}
             >
                 <Text style={styles.removeButtonText}>Remover</Text>
             </TouchableOpacity>
         </View>
-    );
+    )};
 
-    if (cart.length === 0) {
+    if (cart.items.length === 0) {
         return (
             <View style={styles.container}>
                 <View style={styles.emptyContainer}>
