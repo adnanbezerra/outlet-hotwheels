@@ -55,7 +55,6 @@ const CheckoutScreen = () => {
             }
     
             const data = await response.json();
-            console.log('Pagamento confirmado:', data);
             setPaymentConfirmed(true);
         } catch (error) {
             console.error('Erro:', error);

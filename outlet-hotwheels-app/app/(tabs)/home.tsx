@@ -3,13 +3,13 @@ import useProducts from "@/hooks/useProducts";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { useCart } from "@/components/CartContext";
-import * as SecureStore from "expo-secure-store";
 import { IProductCard } from "@/interfaces/product-card";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useUser } from "@/components/UserContext";
 
 const home = () => {
     const { products } = useProducts();
     const { addToCart } = useCart();
+    const { logout } = useUser();
     const router = useRouter();
 
     const handleAddToCart = (product: IProductCard) => {
@@ -24,7 +24,7 @@ const home = () => {
 
     const handleLogout = async () => {
         try {
-            await AsyncStorage.removeItem("token");
+            logout();
             router.replace("/login");
         } catch (error) {
             console.error("Erro ao fazer logout:", error);

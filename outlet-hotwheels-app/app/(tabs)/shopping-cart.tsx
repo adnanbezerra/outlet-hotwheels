@@ -44,9 +44,6 @@ const shoppingCart = () => {
     }, []);
 
     const renderItem = ({ item }: { item: any }) => {
-        console.log({item});
-        
-
         return (
         <View style={styles.itemContainer}>
             <Text style={styles.itemName}>{item.productId?.name || item.name}</Text>

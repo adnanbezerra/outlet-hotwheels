@@ -50,9 +50,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
             items: cart.items.filter((item: any) => item.productId._id !== id),
         });
 
-        console.log(id);
-        console.log(cart);
-
         const token = await AsyncStorage.getItem("token");
         fetch(`${API_URL}/cart/orders/${cart._id}/items/${id}`, {
             method: "DELETE",
