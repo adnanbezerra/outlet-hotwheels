@@ -31,6 +31,10 @@ export async function validatingToken(req, res, next) {
             return res.status(404).send("Usuário não encontrado");
         }
 
+        delete user.password;
+        delete user.createdAt;
+        delete user.updatedAt;
+
         res.locals.user = user;
 
         next();

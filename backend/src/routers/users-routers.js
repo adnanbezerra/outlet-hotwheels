@@ -3,18 +3,20 @@ import { cadastroUser } from "../controllers/cadastro-user-controller.js";
 import { deleteUserController } from "../controllers/delete-user-controller.js";
 import { editUserController } from "../controllers/edit-user-controller.js";
 import { loginUserController } from "../controllers/login-user-controller.js";
-import { getUserController } from "../controllers/user-controller.js";
+import { getUserController, getUserMe } from "../controllers/user-controller.js";
 import { getAllUsers } from "../controllers/user-controller.js";
 import multer from "multer";
 import { validateSchema } from "../middlewares/validate-joi-schema.js";
 import { NewUserSchema } from "../schemas/new-user.js";
 import { Login } from "../schemas/login.js";
+import { validatingToken } from "../middlewares/validate-auth.js";
 
 export const UsersRouter = Router();
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+UsersRouter.get("/user/me", validatingToken, getUserMe);
 UsersRouter.post("/user/register", validateSchema(NewUserSchema), cadastroUser);
 UsersRouter.delete("/user/:id", deleteUserController);
 UsersRouter.put("/user/:id", editUserController);

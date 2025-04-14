@@ -26,3 +26,9 @@ export async function getAllUsers(req, res) {
         return res.status(500).json({ message: "Erro interno do servidor." });
     }
 }
+
+export async function getUserMe(req, res) {
+    const { user } = res.locals;
+
+    return res.status(200).json(user);
+}

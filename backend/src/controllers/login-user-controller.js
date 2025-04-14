@@ -9,10 +9,8 @@ export async function loginUserController(req, res) {
 
     try {
         const user = await User.findOne({ email });
-        console.log("Usuário encontrado:", user);
 
         if (!user) {
-            console.warn("Usuário não encontrado:", email);
             return res.status(404).json({ error: "Usuário não encontrado" });
         }
 
@@ -30,10 +28,9 @@ export async function loginUserController(req, res) {
         console.log("Token gerado com sucesso:", token);
 
         const userResponse = {
+            _id: user._id,
             name: user.name,
             email: user.email,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
         };
 
         console.log("Login bem-sucedido para o usuário:", userResponse);
