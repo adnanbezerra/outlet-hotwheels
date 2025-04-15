@@ -1,96 +1,104 @@
-import { useCart } from '@/components/CartContext';
-import { API_URL } from '@/constants/api';
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { useCart } from "@/components/CartContext";
+import { API_URL } from "@/constants/api";
+import React, { useState } from "react";
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    Image,
+    Alert,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { useNavigation, useRouter } from "expo-router";
 
 const CheckoutScreen = () => {
     const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
     const [paymentConfirmed, setPaymentConfirmed] = useState(false);
-    const [orderId] = useState(''); 
+    const [orderId] = useState("");
     const { cart } = useCart();
 
     const handlePaymentSelection = (method: string) => {
         setSelectedPayment(method);
     };
 
+    const router = useRouter();
+
     const handleConfirmPayment = async () => {
-        
         if (!selectedPayment) {
             console.error("Nenhum método de pagamento foi selecionado.");
             return;
         }
-    
-        try {
-            // const response = await fetch(`${API_URL}/orders/${cart._id}/confirm-payment`, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({
-            //         orderId, // Passa o orderId como parte do corpo da requisição
-            //         paymentDetails: { method: selectedPayment },
-            //     }),
-            // });
-            const token = await AsyncStorage.getItem("token");
-        const response = await fetch(`${API_URL}/orders`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                userId: cart.userId, // ID do usuário
-                items: cart.items.map((item: any) => ({
-                    productId: item.productId._id,
-                    quantity: item.quantity,
-                })),
-            }),
-        });
 
-    
-            if (!response.ok) {
-                throw new Error('Erro ao confirmar pagamento');
-            }
-    
+        console.log("clicou no pitoco");
+
+        try {
+            const token = await AsyncStorage.getItem("token");
+
+            console.log({ token });
+
+            const response = await fetch(`${API_URL}/orders/confirm-payment`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    paymentDetails: { method: selectedPayment },
+                }),
+            });
+
+            console.log({ response });
+
             const data = await response.json();
+
+            console.log(data);
+
             setPaymentConfirmed(true);
+
+            Alert.alert("Pagamento confirmado");
+            router.push("/(tabs)/home");
         } catch (error) {
-            console.error('Erro:', error);
+            console.error("Erro:", error);
         }
     };
 
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Pagamento</Text>
-            
+
             <View style={styles.paymentContainer}>
-                <Text style={styles.paymentTitle}>Escolha o método de pagamento:</Text>
+                <Text style={styles.paymentTitle}>
+                    Escolha o método de pagamento:
+                </Text>
                 <TouchableOpacity
                     style={[
                         styles.paymentButton,
-                        selectedPayment === 'credit' && styles.selectedButton,
+                        selectedPayment === "credit" && styles.selectedButton,
                     ]}
-                    onPress={() => handlePaymentSelection('credit')}
+                    onPress={() => handlePaymentSelection("credit")}
                 >
-                    <Text style={styles.paymentButtonText}>Cartão de Crédito</Text>
+                    <Text style={styles.paymentButtonText}>
+                        Cartão de Crédito
+                    </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[
                         styles.paymentButton,
-                        selectedPayment === 'boleto' && styles.selectedButton,
+                        selectedPayment === "boleto" && styles.selectedButton,
                     ]}
-                    onPress={() => handlePaymentSelection('boleto')}
+                    onPress={() => handlePaymentSelection("boleto")}
                 >
-                    <Text style={styles.paymentButtonText}>Boleto Bancário</Text>
+                    <Text style={styles.paymentButtonText}>
+                        Boleto Bancário
+                    </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[
                         styles.paymentButton,
-                        selectedPayment === 'pix' && styles.selectedButton,
+                        selectedPayment === "pix" && styles.selectedButton,
                     ]}
-                    onPress={() => handlePaymentSelection('pix')}
+                    onPress={() => handlePaymentSelection("pix")}
                 >
                     <Text style={styles.paymentButtonText}>Pix</Text>
                 </TouchableOpacity>
@@ -99,16 +107,19 @@ const CheckoutScreen = () => {
             <TouchableOpacity
                 style={styles.confirmButton}
                 onPress={() => {
-                    handleConfirmPayment()}}
+                    handleConfirmPayment();
+                }}
                 disabled={!selectedPayment || paymentConfirmed}
             >
                 <Text style={styles.confirmButtonText}>
-                    {paymentConfirmed ? 'Pagamento efetuado' : 'Confirmar Pagamento'}
+                    {paymentConfirmed
+                        ? "Pagamento efetuado"
+                        : "Confirmar Pagamento"}
                 </Text>
             </TouchableOpacity>
 
             <Image
-                source={require('../../assets/images/logo.png')}
+                source={require("../../assets/images/logo.png")}
                 style={styles.logo}
             />
         </View>
@@ -118,22 +129,22 @@ const CheckoutScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f8f9fa',
+        backgroundColor: "#f8f9fa",
         padding: 20,
     },
     header: {
         fontSize: 24,
-        fontWeight: 'bold',
-        color: '#ff4500',
+        fontWeight: "bold",
+        color: "#ff4500",
         marginBottom: 20,
-        textAlign: 'center',
+        textAlign: "center",
     },
     paymentContainer: {
-        backgroundColor: '#ffffff',
+        backgroundColor: "#ffffff",
         borderRadius: 10,
         padding: 15,
         marginBottom: 20,
-        shadowColor: '#000',
+        shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 5,
@@ -141,41 +152,41 @@ const styles = StyleSheet.create({
     },
     paymentTitle: {
         fontSize: 18,
-        fontWeight: 'bold',
+        fontWeight: "bold",
         marginBottom: 10,
-        color: '#333',
+        color: "#333",
     },
     paymentButton: {
-        backgroundColor: '#ff4500',
+        backgroundColor: "#ff4500",
         padding: 15,
         borderRadius: 10,
-        alignItems: 'center',
+        alignItems: "center",
         marginBottom: 10,
     },
     selectedButton: {
-        backgroundColor: '#28a745',
+        backgroundColor: "#28a745",
     },
     paymentButtonText: {
-        color: '#fff',
+        color: "#fff",
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: "bold",
     },
     confirmButton: {
-        backgroundColor: '#28a745',
+        backgroundColor: "#28a745",
         padding: 15,
         borderRadius: 10,
-        alignItems: 'center',
+        alignItems: "center",
         marginBottom: 20,
     },
     confirmButtonText: {
-        color: '#fff',
+        color: "#fff",
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: "bold",
     },
     logo: {
         width: 150,
         height: 75,
-        alignSelf: 'center',
+        alignSelf: "center",
         marginTop: 20,
     },
 });

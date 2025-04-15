@@ -1,17 +1,16 @@
-// service/carrinho/order-service.js
 import Order from "../../models/carrinho/order.js";
-import OrderItem from "../../models/carrinho/orderItem.js";
 import { Product } from "../../models/product/index.js";
 
-/// Confirma o pagamento de um pedido
-export async function confirmPayment(paymentDetails) {
-    const user = res.locals.user;
+export async function confirmPayment(user, paymentDetails) {
+    const order = await Order.findOne({ userId: user._id });
 
-    const order = await Order.find({ userId: user._id }, { status: "pending" });
+    console.log({ order });
 
     if (!order) {
-        throw new Error("Pedido não encontrado");
+        return null;
     }
+
+    console.log({ order });
 
     order.status = "completed";
     order.paymentDetails = paymentDetails;
@@ -32,9 +31,7 @@ export async function createOrder(userId, items) {
             }
             return {
                 productId: item.productId,
-                //name: product.name, // add nome do produto
                 quantity: item.quantity,
-                //unitPrice: product.price, // add preço unitário
                 price: product.price * item.quantity,
             };
         })
@@ -51,7 +48,7 @@ export async function createOrder(userId, items) {
         totalPrice,
         status: "pending",
         createdAt: new Date(),
-    }); // add data da compra
+    });
 
     console.log("Pedido a ser salvo no banco de dados:", order);
 

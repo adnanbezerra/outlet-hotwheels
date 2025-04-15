@@ -1,17 +1,26 @@
 import * as orderService from "../service/carrinho/order-service.js";
 
-//Confirmação do pagamento
 export async function confirmPayment(req, res) {
     try {
         const { paymentDetails } = req.body;
 
-        if (!orderId || !paymentDetails) {
+        const { user } = res.locals;
+
+        console.log({ user });
+        console.log({ paymentDetails });
+
+        if (!paymentDetails) {
             return res
                 .status(422)
                 .json({ error: "Dados do pagamento são obrigatórios" });
         }
 
-        const updatedOrder = await orderService.confirmPayment(paymentDetails);
+        const updatedOrder = await orderService.confirmPayment(
+            user,
+            paymentDetails
+        );
+
+        console.log({ updatedOrder });
 
         if (!updatedOrder) {
             return res.status(404).json({ error: "Pedido não encontrado" });
