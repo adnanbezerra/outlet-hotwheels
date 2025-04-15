@@ -101,6 +101,7 @@ const login = () => {
                 <TextInput
                     style={styles.input}
                     placeholder="E-mail"
+                    autoCapitalize="none"
                     value={email}
                     onChangeText={setEmail}
                 />
@@ -111,6 +112,7 @@ const login = () => {
                 <TextInput
                     style={styles.input}
                     placeholder="CPF"
+                    autoCapitalize="none"
                     value={cpf}
                     onChangeText={setCpf}
                     keyboardType="numeric"
@@ -122,6 +124,7 @@ const login = () => {
                 <TextInput
                     style={styles.input}
                     placeholder="Senha"
+                    autoCapitalize="none"
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry
@@ -129,6 +132,7 @@ const login = () => {
                 <TextInput
                     style={styles.input}
                     placeholder="Confirme a senha"
+                    autoCapitalize="none"
                     value={confirmPassword}
                     onChangeText={setConfirmPassword}
                     secureTextEntry

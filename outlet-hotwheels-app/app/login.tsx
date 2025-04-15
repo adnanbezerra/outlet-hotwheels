@@ -63,6 +63,8 @@ const Login = () => {
                     style={styles.input}
                     placeholder="E-mail"
                     textContentType="emailAddress"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
                     value={email}
                     onChangeText={setEmail}
                 />
@@ -70,6 +72,7 @@ const Login = () => {
                     style={styles.input}
                     placeholder="Senha"
                     textContentType="password"
+                    autoCapitalize="none"
                     secureTextEntry
                     value={password}
                     onChangeText={setPassword}

@@ -35,15 +35,15 @@ const home = () => {
         return (
             <View style={style.container}>
                 <View style={style.header}>
-                    <Text style={style.title}>
-                        Seu outlet de HotWheels barato!
-                    </Text>
                     <TouchableOpacity
                         style={style.logoutButton}
                         onPress={handleLogout}
                     >
                         <Text style={style.logoutButtonText}>Logout</Text>
                     </TouchableOpacity>
+                    <Text style={style.title}>
+                        Seu outlet de HotWheels barato!
+                    </Text>
                 </View>
                 <Text style={style.subtitle}>
                     Sem itens cadastrados para o momento
@@ -55,13 +55,13 @@ const home = () => {
     return (
         <View style={style.container}>
             <View style={style.header}>
-                <Text style={style.title}>Seu outlet de HotWheels barato!</Text>
-                <TouchableOpacity
+            <TouchableOpacity
                     style={style.logoutButton}
                     onPress={handleLogout}
                 >
                     <Text style={style.logoutButtonText}>Logout</Text>
                 </TouchableOpacity>
+                <Text style={style.title}>Seu outlet de HotWheels barato!</Text>
             </View>
             <Text style={style.subtitle}>Confira nosso catálogo abaixo:</Text>
             {products.map((product) => (
@@ -93,7 +93,7 @@ const style = StyleSheet.create({
         marginBottom: 5,
     },
     header: {
-        flexDirection: "row",
+        flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
     },
@@ -101,6 +101,7 @@ const style = StyleSheet.create({
         backgroundColor: "#CE3E2F",
         padding: 10,
         borderRadius: 5,
+        alignSelf: "flex-end",
     },
     logoutButtonText: {
         fontSize: 16,
