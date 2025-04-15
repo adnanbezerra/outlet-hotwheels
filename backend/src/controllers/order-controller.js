@@ -3,13 +3,15 @@ import * as orderService from "../service/carrinho/order-service.js";
 //Confirmação do pagamento
 export async function confirmPayment(req, res) {
     try {
-        const { orderId, paymentDetails } = req.body;
+        const { paymentDetails } = req.body;
 
         if (!orderId || !paymentDetails) {
-            return res.status(422).json({ error: "Dados do pagamento são obrigatórios" });
+            return res
+                .status(422)
+                .json({ error: "Dados do pagamento são obrigatórios" });
         }
 
-        const updatedOrder = await orderService.confirmPayment(orderId, paymentDetails);
+        const updatedOrder = await orderService.confirmPayment(paymentDetails);
 
         if (!updatedOrder) {
             return res.status(404).json({ error: "Pedido não encontrado" });
@@ -24,14 +26,16 @@ export async function confirmPayment(req, res) {
 export async function createOrder(req, res) {
     try {
         const { userId, items } = req.body;
-        if (!userId || !items ) {
-            return res.status(422).json({ error: "Dados do pedido são obrigatórios" });
+        if (!userId || !items) {
+            return res
+                .status(422)
+                .json({ error: "Dados do pedido são obrigatórios" });
         }
 
         const order = await orderService.createOrder(userId, items);
         res.status(201).json(order);
     } catch (error) {
-        console.error("Erro ao criar pedido:", error.message)
+        console.error("Erro ao criar pedido:", error.message);
         res.status(500).json({ error: error.message });
     }
 }

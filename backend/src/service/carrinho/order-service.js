@@ -4,28 +4,31 @@ import OrderItem from "../../models/carrinho/orderItem.js";
 import { Product } from "../../models/product/index.js";
 
 /// Confirma o pagamento de um pedido
-export async function confirmPayment(orderId, paymentDetails) {
-    const order = await Order.findById(orderId);
+export async function confirmPayment(paymentDetails) {
+    const user = res.locals.user;
+
+    const order = await Order.find({ userId: user._id }, { status: "pending" });
+
     if (!order) {
         throw new Error("Pedido não encontrado");
     }
 
     order.status = "completed";
-    order.paymentDetails = paymentDetails; 
+    order.paymentDetails = paymentDetails;
 
     await order.save();
-    
 
     return order;
 }
 
 export async function createOrder(userId, items) {
-
     const itemsWithPrice = await Promise.all(
         items.map(async (item) => {
             const product = await Product.findById(item.productId);
             if (!product) {
-                throw new Error(`Produto com ID ${item.productId} não encontrado`);
+                throw new Error(
+                    `Produto com ID ${item.productId} não encontrado`
+                );
             }
             return {
                 productId: item.productId,
@@ -37,17 +40,20 @@ export async function createOrder(userId, items) {
         })
     );
 
-    const totalPrice = itemsWithPrice.reduce((total, item) => total + item.price, 0);
+    const totalPrice = itemsWithPrice.reduce(
+        (total, item) => total + item.price,
+        0
+    );
 
-    const order = new Order({ 
-        userId, 
-        items: itemsWithPrice, 
-        totalPrice, 
+    const order = new Order({
+        userId,
+        items: itemsWithPrice,
+        totalPrice,
         status: "pending",
-        createdAt: new Date() 
+        createdAt: new Date(),
     }); // add data da compra
 
-    console.log("Pedido a ser salvo no banco de dados:", order); 
+    console.log("Pedido a ser salvo no banco de dados:", order);
 
     await order.save();
     return order;
@@ -58,11 +64,19 @@ export async function getOrderById(orderId) {
 }
 
 export async function completeOrder(orderId) {
-    return await Order.findByIdAndUpdate(orderId, { status: "completed" }, { new: true });
+    return await Order.findByIdAndUpdate(
+        orderId,
+        { status: "completed" },
+        { new: true }
+    );
 }
 
 export async function cancelOrder(orderId) {
-    return await Order.findByIdAndUpdate(orderId, { status: "canceled" }, { new: true });
+    return await Order.findByIdAndUpdate(
+        orderId,
+        { status: "canceled" },
+        { new: true }
+    );
 }
 
 export async function addItemToOrder(orderId, productId, quantity) {
@@ -76,7 +90,9 @@ export async function addItemToOrder(orderId, productId, quantity) {
         throw new Error("Produto não encontrado");
     }
 
-    let orderItem = order.items.find(item => item.productId._id.toString() === productId);
+    let orderItem = order.items.find(
+        (item) => item.productId._id.toString() === productId
+    );
 
     if (orderItem) {
         orderItem.quantity += quantity;
@@ -85,11 +101,14 @@ export async function addItemToOrder(orderId, productId, quantity) {
         order.items.push({
             productId: product._id,
             quantity,
-            price: product.price * quantity
+            price: product.price * quantity,
         });
     }
 
-    order.totalPrice = order.items.reduce((total, item) => total + item.price, 0);
+    order.totalPrice = order.items.reduce(
+        (total, item) => total + item.price,
+        0
+    );
 
     await order.save();
 
