@@ -55,7 +55,7 @@ const home = () => {
     return (
         <View style={style.container}>
             <View style={style.header}>
-            <TouchableOpacity
+                <TouchableOpacity
                     style={style.logoutButton}
                     onPress={handleLogout}
                 >

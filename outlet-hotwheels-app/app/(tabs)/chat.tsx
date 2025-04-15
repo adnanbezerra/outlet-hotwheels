@@ -36,9 +36,9 @@ export default function Chat() {
         if (!text.trim()) return;
 
         const newMessage = new Message(text, user?._id ?? "");
-        setChat(prev => [...prev, newMessage]);
+        setChat((prev) => [...prev, newMessage]);
         setText("");
-        
+
         try {
             setIsLoading(true);
             const token = await AsyncStorage.getItem("token");
@@ -55,7 +55,7 @@ export default function Chat() {
             const data = await response.json();
 
             const chatResponse = new Message(data, "AI");
-            setChat(prev => [...prev, chatResponse]);
+            setChat((prev) => [...prev, chatResponse]);
         } catch (error) {
             console.error("Erro ao enviar mensagem:", error);
         } finally {
@@ -68,13 +68,15 @@ export default function Chat() {
     }, [chat]);
 
     const renderMessage = ({ item }: { item: Message }) => (
-        <View 
+        <View
             style={[
                 styles.messageContainer,
-                item.sentBy === "AI" ? styles.aiMessage : styles.userMessage
+                item.sentBy === "AI" ? styles.aiMessage : styles.userMessage,
             ]}
         >
-            <Text style={styles.messageSentBy}>{item.sentBy === "AI" ? "AI" : "Você"}</Text>
+            <Text style={styles.messageSentBy}>
+                {item.sentBy === "AI" ? "AI" : "Você"}
+            </Text>
             <Text style={styles.messageText}>{item.text}</Text>
         </View>
     );
@@ -84,7 +86,9 @@ export default function Chat() {
             <FlatList
                 ref={scrollRef}
                 data={chat}
-                contentContainerStyle={chat.length === 0 ? { flex: 1 } : { paddingVertical: 10 }}
+                contentContainerStyle={
+                    chat.length === 0 ? { flex: 1 } : { paddingVertical: 10 }
+                }
                 renderItem={renderMessage}
                 keyExtractor={(item) => item.id.toString()}
                 ListEmptyComponent={
@@ -126,10 +130,7 @@ export default function Chat() {
                 />
                 <TouchableOpacity
                     onPress={sendMessage}
-                    style={[
-                        style.sendButton,
-                        isLoading && { opacity: 0.7 }
-                    ]}
+                    style={[style.sendButton, isLoading && { opacity: 0.7 }]}
                     disabled={isLoading}
                 >
                     <Text style={{ color: "#fff" }}>
@@ -169,28 +170,28 @@ const style = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 12,
         marginBottom: 5,
-    }
+    },
 });
 
 const styles = StyleSheet.create({
     ...style,
     messageContainer: {
-        maxWidth: '80%',
+        maxWidth: "80%",
         marginHorizontal: 10,
         marginVertical: 5,
         padding: 10,
         borderRadius: 10,
     },
     userMessage: {
-        alignSelf: 'flex-end',
-        backgroundColor: '#CE3E2F',
+        alignSelf: "flex-end",
+        backgroundColor: "#CE3E2F",
     },
     aiMessage: {
-        alignSelf: 'flex-start',
-        backgroundColor: '#E8E8E8',
+        alignSelf: "flex-start",
+        backgroundColor: "#E8E8E8",
     },
     messageText: {
-        color: '#000',
+        color: "#000",
         fontSize: 16,
-    }
+    },
 });

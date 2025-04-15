@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
-import { API_URL } from '@/constants/api';
+import { API_URL } from "@/constants/api";
 
 const login = () => {
     const router = useRouter();
@@ -53,7 +53,7 @@ const login = () => {
                         password,
                     }),
                 });
-    
+
                 const data = await response.json();
                 if (response.ok) {
                     alert(data.message);
