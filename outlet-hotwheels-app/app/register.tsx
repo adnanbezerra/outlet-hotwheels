@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import { API_URL } from '@/constants/api';
 
 const login = () => {
     const router = useRouter();
@@ -43,7 +44,7 @@ const login = () => {
     const handleSubmit = async () => {
         if (isFormValid()) {
             try {
-                const response = await fetch("http://localhost:3000/user/register", {
+                const response = await fetch(`${API_URL}/user/register`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({

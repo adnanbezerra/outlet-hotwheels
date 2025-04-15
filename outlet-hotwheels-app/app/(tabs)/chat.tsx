@@ -53,7 +53,8 @@ export default function Chat() {
             });
 
             const data = await response.json();
-            const chatResponse = new Message(data.text, "AI");
+
+            const chatResponse = new Message(data, "AI");
             setChat(prev => [...prev, chatResponse]);
         } catch (error) {
             console.error("Erro ao enviar mensagem:", error);

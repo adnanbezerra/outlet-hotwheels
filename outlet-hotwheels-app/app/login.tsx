@@ -12,6 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUser } from "@/components/UserContext";
+import { API_URL } from '@/constants/api';
 
 const Login = () => {
     const router = useRouter();
@@ -22,7 +23,7 @@ const Login = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await fetch("http://localhost:3000/user/login", {
+            const response = await fetch(`${API_URL}/user/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
